@@ -1,0 +1,50 @@
+version: '2.0'
+
+services:
+
+    db:
+        image: postgres:9
+        env_file:
+            - database.env
+        volumes:
+            - pg_data:/var/lib/postgresql/data
+
+    adminer:
+        image: adminer
+        ports:
+            - 8080:8080
+        depends_on:
+            - db
+
+    monitutor-web:
+        image: 73033600f737
+        env_file:
+            - database.env
+        volumes:
+            - certs:/etc/apache2/ssl
+            - config:/var/www/web2py/applications/MoniTutor/private
+            - web2py_db:/var/www/web2py/applications/MoniTutor/databases
+        depends_on:
+            - db
+        ports:
+            - 443:443
+
+    web2py-scheduler:
+        image: 73033600f737
+        env_file:
+           - database.env
+        volumes_from:
+            - monitutor-web
+        depends_on:
+            - db
+            - monitutor-web
+        command: python ./web2py.py -K MoniTutor:init:main
+
+volumes:
+    config:
+    certs:
+    pg_data: 
+    web2py_db:
+
+ 
+
