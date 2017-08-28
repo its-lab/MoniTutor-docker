@@ -1,4 +1,4 @@
-FROM ms42q/web2py-apache2:1.0
+FROM ms42q/web2py-apache2:v1.1
 
 RUN rm -rf /var/www/web2py/applications/welcome && \
     rm -rf /var/www/web2py/applications/examples
