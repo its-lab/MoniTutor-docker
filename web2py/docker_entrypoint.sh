@@ -12,4 +12,4 @@ cat $APPCONFIG_FILE
 
 echo "default_application = 'MoniTutor'" > /var/www/web2py/routes.py
 
-exec /var/www/docker_entrypoint.sh $@
+exec $@
