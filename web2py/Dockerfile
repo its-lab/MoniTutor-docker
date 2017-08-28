@@ -8,13 +8,14 @@ RUN cd /var/www/web2py/applications && \
     chown -R www-data:www-data /var/www/web2py/applications
 
 RUN apt-get update && \
-    apt-get install python-pip libgraphviz-dev graphviz-dev python-psycopg2 -y && \
+    apt-get install supervisor python-pip libgraphviz-dev graphviz-dev python-psycopg2 -y && \
     apt-get clean
 RUN pip install requests pykka sqlalchemy subprocess32
 
 ADD ./docker_entrypoint.sh /tmp/
+ADD ./supervisord.conf /etc/supervisord.conf
 RUN chmod 755 /tmp/docker_entrypoint.sh
 
-CMD /tmp/docker_entrypoint.sh apachectl -e info -DFOREGROUND
+CMD bash /tmp/docker_entrypoint.sh supervisord -c /etc/supervisord.conf
 
 
