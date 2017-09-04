@@ -5,7 +5,7 @@ services:
     db:
         build: ../pgsql/
         env_file:
-            - database.env
+            - options.env
         volumes:
             - pg_data:/var/lib/postgresql/data
     icinga:
@@ -13,7 +13,7 @@ services:
         depends_on:
             - db
         env_file:
-            - database.env
+            - options.env
         volumes:
             - templates:/etc/icinga2/conf.d/monitutor
             - object:/var/lib/icinga2/api
@@ -28,7 +28,7 @@ services:
     monitutor-web:
         build: ../web2py
         env_file:
-            - database.env
+            - options.env
         volumes:
             - certs:/etc/apache2/ssl
             - config:/var/www/web2py/applications/MoniTutor/private
@@ -41,7 +41,7 @@ services:
     web2py-scheduler:
         build: ../web2py
         env_file:
-           - database.env
+           - options.env
         volumes_from:
             - monitutor-web
         depends_on:
