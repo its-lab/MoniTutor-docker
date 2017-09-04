@@ -8,6 +8,15 @@ services:
             - database.env
         volumes:
             - pg_data:/var/lib/postgresql/data
+    icinga:
+        build: ../icinga2/
+        depends_on:
+            - db
+        env_file:
+            - database.env
+        volumes:
+            - templates:/etc/icinga2/conf.d/monitutor
+            - object:/var/lib/icinga2/api
 
     adminer:
         image: adminer
@@ -45,6 +54,5 @@ volumes:
     certs:
     pg_data: 
     web2py_db:
-
- 
-
+    templates:
+    object:
