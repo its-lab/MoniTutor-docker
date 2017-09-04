@@ -3,7 +3,7 @@ version: '2.0'
 services:
 
     db:
-        image: postgres:9
+        build: ../pgsql/
         env_file:
             - database.env
         volumes:
