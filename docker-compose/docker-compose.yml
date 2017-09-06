@@ -26,7 +26,7 @@ services:
             - db
 
     monitutor-web:
-        build: ../web2py
+        build: ../monitutor
         env_file:
             - options.env
         volumes:
@@ -38,8 +38,8 @@ services:
         ports:
             - 443:443
 
-    web2py-scheduler:
-        build: ../web2py
+    monitutor-scheduler:
+        build: ../monitutor
         env_file:
            - options.env
         volumes_from:
