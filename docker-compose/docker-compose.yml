@@ -25,8 +25,8 @@ services:
         env_file:
             - options.env
         volumes:
-            - certs:/etc/apache2/ssl
-            - config:/var/www/web2py/applications/MoniTutor/private
+            - ssl_certs:/etc/apache2/ssl
+            - monitutor_appconfig:/var/www/web2py/applications/MoniTutor/private
             - web2py_db:/var/www/web2py/applications/MoniTutor/databases
         depends_on:
             - db
@@ -49,8 +49,8 @@ services:
         command: python ./web2py.py -K MoniTutor:init:main
 
 volumes:
-    config:
-    certs:
+    monitutor_appconfig:
+    ssl_certs:
     pg_data: 
     web2py_db:
     icinga2_config:
