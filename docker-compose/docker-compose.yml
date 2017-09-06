@@ -18,6 +18,7 @@ services:
             - icinga2_config:/etc/icinga2/
             - icinga2_socket:/run/icinga2/cmd/
             - icinga2_api_objects:/var/lib/icinga2/api
+        hostname: docker-icinga2
 
     monitutor-web:
         build: ../monitutor
