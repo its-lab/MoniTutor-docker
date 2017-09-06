@@ -7,7 +7,8 @@ services:
             - options.env
         volumes:
             - pg_data:/var/lib/postgresql/data
-    icinga:
+
+    icinga2:
         build: ../icinga2/
         depends_on:
             - db
@@ -34,6 +35,7 @@ services:
             - web2py_db:/var/www/web2py/applications/MoniTutor/databases
         depends_on:
             - db
+            - icinga2
         ports:
             - 443:443
 
@@ -46,6 +48,7 @@ services:
         depends_on:
             - db
             - monitutor-web
+            - icinga2
         command: python ./web2py.py -K MoniTutor:init:main
 
 volumes:
