@@ -18,13 +18,6 @@ services:
             - templates:/etc/icinga2/conf.d/monitutor
             - object:/var/lib/icinga2/api
 
-    adminer:
-        image: adminer
-        ports:
-            - 8080:8080
-        depends_on:
-            - db
-
     monitutor-web:
         build: ../monitutor
         env_file:
