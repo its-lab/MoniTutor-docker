@@ -1,7 +1,6 @@
 version: '2.0'
 
 services:
-
     db:
         build: ../pgsql/
         env_file:
