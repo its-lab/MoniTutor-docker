@@ -48,6 +48,21 @@ services:
             - icinga2
         command: python ./web2py.py -K MoniTutor:init:main
 
+    monitutor-tunnel:
+        build: ../monitutor-tunnel
+        env_file:
+            - options.env
+        volumes:
+            - ssl_certs:/etc/ssl:ro
+            - icinga2_socket:/run/icinga2/cmd/
+        depends_on:
+            - db
+            - icinga2
+            - monitutor-web
+        ports:
+            - 5998:5998
+        command: ["-p", "5998", "-vv"]
+
 volumes:
     monitutor_appconfig:
     ssl_certs:
