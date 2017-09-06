@@ -5,6 +5,7 @@ RUN rm -rf /var/www/web2py/applications/welcome && \
 
 RUN cd /var/www/web2py/applications && \
     git clone https://github.com/its-lab/MoniTutor.git && \
+    rm -rf ./MoniTutor/.git && \
     chown -R www-data:www-data /var/www/web2py/applications
 
 RUN apt-get update && \
