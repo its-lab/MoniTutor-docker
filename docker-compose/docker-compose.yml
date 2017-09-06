@@ -15,8 +15,9 @@ services:
         env_file:
             - options.env
         volumes:
-            - templates:/etc/icinga2/conf.d/monitutor
-            - object:/var/lib/icinga2/api
+            - icinga2_config:/etc/icinga2/
+            - icinga2_socket:/run/icinga2/cmd/
+            - icinga2_api_objects:/var/lib/icinga2/api
 
     monitutor-web:
         build: ../monitutor
@@ -38,6 +39,8 @@ services:
            - options.env
         volumes_from:
             - monitutor-web
+        volumes:
+            - icinga2_config:/etc/icinga2/
         depends_on:
             - db
             - monitutor-web
@@ -49,5 +52,6 @@ volumes:
     certs:
     pg_data: 
     web2py_db:
-    templates:
-    object:
+    icinga2_config:
+    icinga2_api_objects:
+    icinga2_socket:
