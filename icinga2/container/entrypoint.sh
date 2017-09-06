@@ -2,8 +2,8 @@
 
 set -e
 
-if [ ! -f /container/.installed ]; then
-	if [ ! -f /container/.psql-installed ]; then
+if [ ! -f /etc/icinga2/conf.d/.installed ]; then
+	if [ ! -f /etc/icinga2/conf.d/.psql-installed ]; then
 		export PGPASSWORD=$ICINGA2_DATABASE_PASSWORD
         while ! psql -h $ICINGA2_DATABASE_HOST -U $ICINGA2_DATABASE_USERNAME -d $ICINGA2_DATABASE_NAME; do
             echo "Couldn't connect to Database. Try again in 5 seconds..."
@@ -21,16 +21,17 @@ object IdoPgsqlConnection \"ido-pgsql\" {
   host = \"$ICINGA2_DATABASE_HOST\",
   database = \"$ICINGA2_DATABASE_NAME\"
 }" > /etc/icinga2/features-enabled/ido-pgsql.conf
-
-    	touch /container/.psql-installed
+	touch /etc/icinga2/conf.d/.psql-installed
 	fi
 	icinga2 api setup
  	echo \
 "object ApiUser \"$ICINGA2_API_USERNAME\" {
 	password = \"$ICINGA2_API_PASSWORD\"
 	permissions = [ \"*\" ]
-}" > /etc/icinga2/features-enabled/api.conf
-touch /container/.installed
+}" >> /etc/icinga2/conf.d/api-users.conf
+    icinga2 feature enable api
+    icinga2 feature enable command
+    touch /etc/icinga2/conf.d/.installed
 fi
 
 exec "$@"
