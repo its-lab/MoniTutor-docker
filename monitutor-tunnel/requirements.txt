@@ -1,0 +1,6 @@
+requests
+pykka
+sqlalchemy
+subprocess32
+psycopg2
+pyyaml
