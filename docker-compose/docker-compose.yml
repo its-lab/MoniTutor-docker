@@ -46,7 +46,7 @@ services:
             - db
             - monitutor-web
             - icinga2
-        command: python ./web2py.py -K MoniTutor:init:main
+        command: ["python", "./web2py.py", "-K", "MoniTutor:init:main"]
 
     monitutor-tunnel:
         build: ../monitutor-tunnel
