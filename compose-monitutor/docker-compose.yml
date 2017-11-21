@@ -1,5 +1,4 @@
-version: '2.0'
-
+version: "2.1"
 services:
     db:
         build: ../pgsql/
@@ -48,20 +47,29 @@ services:
             - icinga2
         command: ["python", "./web2py.py", "-K", "MoniTutor:init:main"]
 
-    monitutor-tunnel:
+    resultwriter:
         build: ../monitutor-tunnel
-        env_file:
-            - options.env
         volumes:
-            - ssl_certs:/etc/ssl:ro
             - icinga2_socket:/run/icinga2/cmd/
         depends_on:
-            - db
+            - rabbit-mq
             - icinga2
-            - monitutor-web
+        env_file:
+            - options.env
+        command: ["python", "start_resultwriter.py", "-a", "rabbit-mq", "-vvv"]
+
+    tunnelserver:
+        build: ../monitutor-tunnel
+        volumes:
+            - ssl_certs:/etc/ssl:ro
+        depends_on:
+            - rabbit-mq
+            - icinga2
         ports:
-            - 5998:5998
-        command: ["-p", "5998", "-vv"]
+            - 13337:13337
+        env_file:
+            - options.env
+        command: ["python", "start_server.py", "-u", "${DATABASE_USER}", "-w", "${DATABASE_PASSWORD}", "-j", "${DATABASE_HOST}", "-n", "${POSTGRES_DB}", "-r", "rabbit-mq", "-vv"]
 
 volumes:
     monitutor_appconfig:
