@@ -27,11 +27,17 @@ services:
             - ssl_certs:/etc/apache2/ssl
             - monitutor_appconfig:/var/www/web2py/applications/MoniTutor/private
             - web2py_db:/var/www/web2py/applications/MoniTutor/databases
+            - /etc/localtime:/etc/localtime:ro
         depends_on:
             - db
             - icinga2
         ports:
             - 443:443
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:80"]
+            interval: 15s
+            timeout: 5s
+            retries: 5
 
     monitutor-scheduler:
         build: ../monitutor
@@ -42,10 +48,20 @@ services:
         volumes:
             - icinga2_config:/etc/icinga2/
         depends_on:
-            - db
-            - monitutor-web
-            - icinga2
+            monitutor-web:
+                condition: service_healthy
         command: ["python", "./web2py.py", "-K", "MoniTutor:init:main"]
+
+    rabbit-mq:
+        build: ../rabbit-mq
+        ports:
+            - 15674:15674
+            - 15671:15671
+            - 8080:15672
+            - 5672:5672
+        volumes:
+            - ssl_certs:/ssl:ro
+        hostname: docker-rabbit
 
     resultwriter:
         build: ../monitutor-tunnel
