@@ -1,6 +1,6 @@
 [submodule "monitutor/MoniTutor"]
 	path = monitutor/MoniTutor
-	url = git@github.com:its-lab/MoniTutor.git
+	url = https://github.com/its-lab/MoniTutor.git
 [submodule "monitutor-tunnel/MoniTutor-Tunnel"]
 	path = monitutor-tunnel/MoniTutor-Tunnel
-	url = git@github.com:its-lab/MoniTutor-Tunnel.git
+	url = https://github.com/its-lab/MoniTutor-Tunnel.git
