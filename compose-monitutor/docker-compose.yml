@@ -28,6 +28,8 @@ services:
             - monitutor_appconfig:/var/www/web2py/applications/MoniTutor/private
             - web2py_db:/var/www/web2py/applications/MoniTutor/databases
             - /etc/localtime:/etc/localtime:ro
+            - icinga2_config:/etc/icinga2/
+
         depends_on:
             - db
             - icinga2
@@ -38,19 +40,6 @@ services:
             interval: 15s
             timeout: 5s
             retries: 5
-
-    monitutor-scheduler:
-        build: ../monitutor
-        env_file:
-           - options.env
-        volumes_from:
-            - monitutor-web
-        volumes:
-            - icinga2_config:/etc/icinga2/
-        depends_on:
-            monitutor-web:
-                condition: service_healthy
-        command: ["python", "./web2py.py", "-K", "MoniTutor:init:main"]
 
     rabbit-mq:
         build: ../rabbit-mq
