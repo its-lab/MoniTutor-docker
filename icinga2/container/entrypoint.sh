@@ -23,14 +23,15 @@ object IdoPgsqlConnection \"ido-pgsql\" {
 }" > /etc/icinga2/features-enabled/ido-pgsql.conf
 	touch /etc/icinga2/conf.d/.psql-installed
 	fi
+    icinga2 feature enable api
+    icinga2 feature enable command
+    echo "Set up API"
 	icinga2 api setup
  	echo \
 "object ApiUser \"$ICINGA2_API_USERNAME\" {
 	password = \"$ICINGA2_API_PASSWORD\"
 	permissions = [ \"*\" ]
-}" >> /etc/icinga2/conf.d/api-users.conf
-    icinga2 feature enable api
-    icinga2 feature enable command
+}" > /etc/icinga2/conf.d/api-users.conf
     touch /etc/icinga2/conf.d/.installed
 fi
 
