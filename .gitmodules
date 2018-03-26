@@ -1,0 +1,6 @@
+[submodule "monitutor/MoniTutor"]
+	path = monitutor/MoniTutor
+	url = https://github.com/its-lab/MoniTutor.git
+[submodule "monitutor-tunnel/MoniTutor-Tunnel"]
+	path = monitutor-tunnel/MoniTutor-Tunnel
+	url = https://github.com/its-lab/MoniTutor-Tunnel.git

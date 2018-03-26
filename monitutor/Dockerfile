@@ -3,15 +3,18 @@ FROM ms42q/web2py-apache2:v1.1
 RUN rm -rf /var/www/web2py/applications/welcome && \
     rm -rf /var/www/web2py/applications/examples
 
-RUN cd /var/www/web2py/applications && \
-    git clone https://github.com/its-lab/MoniTutor.git && \
-    rm -rf ./MoniTutor/.git && \
-    chown -R www-data:www-data /var/www/web2py/applications
+#RUN cd /var/www/web2py/applications && \
+#    git clone https://github.com/its-lab/MoniTutor.git && \
+#    rm -rf ./MoniTutor/.git && \
+#    chown -R www-data:www-data /var/www/web2py/applications
 
 RUN apt-get update && \
-    apt-get install supervisor python-pip libgraphviz-dev graphviz-dev python-psycopg2 -y && \
+    apt-get install supervisor python-pip libgraphviz-dev graphviz-dev python-psycopg2 curl -y && \
     apt-get clean
-RUN pip install requests pykka sqlalchemy subprocess32
+RUN pip install requests pykka sqlalchemy subprocess32 pika
+
+COPY MoniTutor /var/www/web2py/applications/MoniTutor
+RUN chown -R www-data:www-data /var/www/web2py/applications
 
 ADD ./docker_entrypoint.sh /tmp/
 ADD ./supervisord.conf /etc/supervisord.conf
