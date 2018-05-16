@@ -76,6 +76,13 @@ services:
             - options.env
         command: ["python", "start_server.py", "-u", "${DATABASE_USER}", "-w", "${DATABASE_PASSWORD}", "-j", "${DATABASE_HOST}", "-n", "${POSTGRES_DB}", "-r", "rabbit-mq", "-vv"]
 
+    ## tunnelclient can be used for testing
+    #tunnelclient:
+        #build: ../monitutor-tunnel
+        #depends_on:
+        #    - tunnelserver
+        #command: ["python", "start_client.py", "-u", "testuser", "-w", "testhmac", "-p", "13337", "-a", "tunnelserver", "-vvvv", "-n", "itsclient"]
+
 volumes:
     monitutor_appconfig:
     ssl_certs:

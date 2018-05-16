@@ -1,12 +1,11 @@
 FROM ms42q/web2py-apache2:v1.1
 
+ENV CERT_SUBJECT="/CN=monitutor.example.com"
+ENV CA_SUBJECT="/CN=Monitutor CA/O=Monitutor"
+
+
 RUN rm -rf /var/www/web2py/applications/welcome && \
     rm -rf /var/www/web2py/applications/examples
-
-#RUN cd /var/www/web2py/applications && \
-#    git clone https://github.com/its-lab/MoniTutor.git && \
-#    rm -rf ./MoniTutor/.git && \
-#    chown -R www-data:www-data /var/www/web2py/applications
 
 RUN apt-get update && \
     apt-get install supervisor python-pip libgraphviz-dev graphviz-dev python-psycopg2 curl -y && \
@@ -20,6 +19,7 @@ ADD ./docker_entrypoint.sh /tmp/
 ADD ./supervisord.conf /etc/supervisord.conf
 RUN chmod 755 /tmp/docker_entrypoint.sh
 
-CMD bash /tmp/docker_entrypoint.sh supervisord -c /etc/supervisord.conf
+ENTRYPOINT ["bash", "/tmp/docker_entrypoint.sh"]
+CMD supervisord -c /etc/supervisord.conf
 
 
