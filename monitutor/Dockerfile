@@ -1,7 +1,7 @@
 FROM ms42q/web2py-apache2:v1.1
 
 ENV CERT_SUBJECT="/CN=monitutor.example.com"
-ENV CA_SUBJECT="/CN=ca.monitutor.example.com"
+ENV CA_SUBJECT="/CN=Monitutor CA/O=Monitutor"
 
 
 RUN rm -rf /var/www/web2py/applications/welcome && \
