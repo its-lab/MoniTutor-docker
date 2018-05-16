@@ -17,9 +17,9 @@ be named "cacert.pem" "key.pem" and "cert.pem".
 EOT
     cd /etc/apache2/ssl
     openssl genrsa 2048 > ca.key  && chmod 400 ca.key
-    openssl req -x509 -new -nodes -key ca.key -sha256 -days 3650 -subj $CA_SUBJECT > cacert.pem
+    openssl req -x509 -new -nodes -key ca.key -sha256 -days 3650 -subj "$CA_SUBJECT" > cacert.pem
     openssl genrsa 2048 > key.pem && chmod 400 key.pem
-    openssl req -new -key key.pem -subj $CERT_SUBJECT > cert.csr
+    openssl req -new -key key.pem -subj "$CERT_SUBJECT" > cert.csr
     openssl x509 -req -in cert.csr -CA cacert.pem -CAkey ca.key -CAcreateserial -days 3650 -sha256 > cert.pem
 fi
 
