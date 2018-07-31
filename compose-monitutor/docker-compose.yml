@@ -52,6 +52,14 @@ services:
             - ssl_certs:/ssl:ro
         hostname: docker-rabbit
 
+    couchdb:
+        image: couchdb:2.1
+        ports:
+            - 5984:5984
+        volumes:
+            - couchdb_config:/opt/couchdb/etc
+            - couchdb_data:/opt/couchdb/data
+
     resultwriter:
         build: ../monitutor-tunnel
         volumes:
@@ -62,6 +70,15 @@ services:
         env_file:
             - options.env
         command: ["python", "start_resultwriter.py", "-a", "rabbit-mq", "-vvv"]
+
+    coudchdb-resultwriter:
+        build: ../monitutor-tunnel
+        depends_on:
+            - rabbit-mq
+            - couchdb
+        env_file:
+            - options.env
+        command: ["python", "start_couchDB_resultwriter.py", "-a", "rabbit-mq", "-vvv", "-u", "admin", "-p", "admin"]
 
     tunnelserver:
         build: ../monitutor-tunnel
@@ -91,3 +108,5 @@ volumes:
     icinga2_config:
     icinga2_api_objects:
     icinga2_socket:
+    couchdb_data:
+    couchdb_config:
