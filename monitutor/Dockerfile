@@ -10,7 +10,7 @@ RUN rm -rf /var/www/web2py/applications/welcome && \
 RUN apt-get update && \
     apt-get install supervisor python-pip libgraphviz-dev graphviz-dev python-psycopg2 curl -y && \
     apt-get clean
-RUN pip install requests pykka sqlalchemy subprocess32 pika
+RUN pip install requests pykka sqlalchemy subprocess32 pika cloudant
 
 COPY MoniTutor /var/www/web2py/applications/MoniTutor
 RUN chown -R www-data:www-data /var/www/web2py/applications
