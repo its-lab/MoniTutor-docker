@@ -26,6 +26,7 @@ fi
 APPCONFIG_FILE="/var/www/web2py/applications/MoniTutor/private/appconfig.ini"
 
 chown -R www-data:www-data /var/www/web2py/applications/MoniTutor/databases
+chown -R www-data:www-data /var/www/web2py/applications/MoniTutor/uploads
 
 sed -i s/"database_host =.*"/"database_host = $DATABASE_HOST"/  $APPCONFIG_FILE
 sed -i s/"database_user =.*"/"database_user = $DATABASE_USER"/  $APPCONFIG_FILE
