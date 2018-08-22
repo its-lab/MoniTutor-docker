@@ -39,7 +39,7 @@ services:
         hostname: docker-rabbit
 
     couchdb:
-        image: couchdb:2.1
+        build: ../couchdb
         environment:
             - COUCHDB_USER=admin
             - COUCHDB_PASSWORD=admin
