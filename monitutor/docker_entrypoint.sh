@@ -33,6 +33,7 @@ sed -i s/"database_user =.*"/"database_user = $DATABASE_USER"/  $APPCONFIG_FILE
 sed -i s/"database_name =.*"/"database_name = $DATABASE_NAME"/  $APPCONFIG_FILE
 sed -i s/"database_password =.*"/"database_password = $DATABASE_PASSWORD"/  $APPCONFIG_FILE
 sed -i s/"rabbit_mq_external_address =.*"/"rabbit_mq_external_address = $EXTERNAL_ADDRESS"/  $APPCONFIG_FILE
+sed -i s/"rabbit_mq_websocket_port =.*"/"rabbit_mq_websocket_port = $EXTERNAL_RABBITMQ_WS_PORT"/  $APPCONFIG_FILE
 
 echo "default_application = 'MoniTutor'" > /var/www/web2py/routes.py
 
