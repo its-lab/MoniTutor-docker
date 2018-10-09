@@ -40,9 +40,8 @@ services:
 
     couchdb:
         build: ../couchdb
-        environment:
-            - COUCHDB_USER=admin
-            - COUCHDB_PASSWORD=admin
+        env_file:
+            - options.env
         ports:
             - 5984:5984
         volumes:
@@ -56,7 +55,7 @@ services:
             - couchdb
         env_file:
             - options.env
-        command: ["python", "start_couchDB_resultwriter.py", "-a", "rabbit-mq", "-vvv", "-u", "admin", "-p", "admin"]
+        command: ["python", "start_couchDB_resultwriter.py", "-a", "rabbit-mq", "-vvv", "-u", "${COUCHDB_USER}", "-p", "${COUCHDB_PASSWORD}"]
 
     tunnelserver:
         build: ../monitutor-tunnel
