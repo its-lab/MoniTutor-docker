@@ -1,23 +1,11 @@
 version: "2.1"
 services:
     db:
-        build: ../pgsql/
+        image: postgres:9
         env_file:
             - options.env
         volumes:
             - pg_data:/var/lib/postgresql/data
-
-    icinga2:
-        build: ../icinga2/
-        depends_on:
-            - db
-        env_file:
-            - options.env
-        volumes:
-            - icinga2_config:/etc/icinga2/
-            - icinga2_socket:/run/icinga2/cmd/
-            - icinga2_api_objects:/var/lib/icinga2/api
-        hostname: docker-icinga2
 
     monitutor-web:
         build: ../monitutor
@@ -27,12 +15,10 @@ services:
             - ssl_certs:/etc/apache2/ssl
             - monitutor_appconfig:/var/www/web2py/applications/MoniTutor/private
             - web2py_db:/var/www/web2py/applications/MoniTutor/databases
+            - web2py_uploads:/var/www/web2py/applications/MoniTutor/uploads
             - /etc/localtime:/etc/localtime:ro
-            - icinga2_config:/etc/icinga2/
-
         depends_on:
             - db
-            - icinga2
         ports:
             - 443:443
         healthcheck:
@@ -52,16 +38,24 @@ services:
             - ssl_certs:/ssl:ro
         hostname: docker-rabbit
 
-    resultwriter:
-        build: ../monitutor-tunnel
-        volumes:
-            - icinga2_socket:/run/icinga2/cmd/
-        depends_on:
-            - rabbit-mq
-            - icinga2
+    couchdb:
+        build: ../couchdb
         env_file:
             - options.env
-        command: ["python", "start_resultwriter.py", "-a", "rabbit-mq", "-vvv"]
+        ports:
+            - 5984:5984
+        volumes:
+            - couchdb_config:/opt/couchdb/etc
+            - couchdb_data:/opt/couchdb/data
+
+    coudchdb-resultwriter:
+        build: ../monitutor-tunnel
+        depends_on:
+            - rabbit-mq
+            - couchdb
+        env_file:
+            - options.env
+        command: ["python", "start_couchDB_resultwriter.py", "-a", "rabbit-mq", "-vvv", "-u", "${COUCHDB_USER}", "-p", "${COUCHDB_PASSWORD}"]
 
     tunnelserver:
         build: ../monitutor-tunnel
@@ -69,7 +63,6 @@ services:
             - ssl_certs:/etc/ssl:ro
         depends_on:
             - rabbit-mq
-            - icinga2
         ports:
             - 13337:13337
         env_file:
@@ -88,6 +81,6 @@ volumes:
     ssl_certs:
     pg_data:
     web2py_db:
-    icinga2_config:
-    icinga2_api_objects:
-    icinga2_socket:
+    web2py_uploads:
+    couchdb_data:
+    couchdb_config:
