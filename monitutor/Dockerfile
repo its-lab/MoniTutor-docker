@@ -1,4 +1,4 @@
-FROM ms42q/web2py-apache2:v1.1
+FROM ms42q/web2py-apache2:v1.2
 
 ENV CERT_SUBJECT="/CN=monitutor.example.com"
 ENV CA_SUBJECT="/CN=Monitutor CA/O=Monitutor"
